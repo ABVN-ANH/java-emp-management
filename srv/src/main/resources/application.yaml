@@ -3,8 +3,55 @@
 spring:
   config.activate.on-profile: default
   sql.init.platform: h2
+
+---
+spring:
+  config.activate.on-profile: mocked
+  sql.init.platform: h2
 cds:
   data-source.auto-config.enabled: false
+  index-page.enabled: true
+  security:
+    authentication.normalize-provider-tenant: true
+    mock.users:
+      anh:
+        password:
+        roles:
+        - Admin
+      admin:
+        password:
+        roles:
+        - Admin
+        additional:
+          email: admin@abeam.com
+      viewer:
+        password:
+        roles:
+        - Viewer
+        additional:
+          email: viewer@abeam.com
+---
+spring:
+  config.activate.on-profile: cloud
+  datasource:
+    url: jdbc:sap://98db2dbc-1d9a-4d74-b927-f09a0a4ce123.hana.trial-us10.hanacloud.ondemand.com:443?encrypt=true&validateCertificate=true&currentschema=07F8E7908E5E4320AFB1A9436D500544
+    username: 07F8E7908E5E4320AFB1A9436D500544_F4Q4NE4UIA3A4ZQS6YGJWVLYK_RT
+    password: Tu30lpilBckS8AIHIwYvCvDn6Pk45La8MOlJUKaPThfcVv2lkAnB8FYT3Pti-FhxWD2tFQDYyfGC1HUBQJNdp.8rDBFKo4yRIWEJeiC5hV7KbMXgABqtHdjuFf3nCjDd
+    driver-class-name: com.sap.db.jdbc.Driver
+cds:
+  index-page.enabled: true
+  sql.hana.search:
+    fuzzy: true
+    fuzzinessThreshold: 0.9
+  messaging.services:
+    bupa-messaging:
+      kind: enterprise-messaging
+      format: cloudevents
+      subscribe-prefix: sap/S4HANAOD/java/ce/
+---         
+server.servlet.encoding:
+  charset: UTF-8
+  force: true
 ---
 management:
   endpoint:
